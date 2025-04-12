@@ -84,9 +84,6 @@ for idx, (query, image_path, mask_data) in enumerate(tqdm(dataset, desc="Process
         with open(query_file_path, 'w', encoding='utf-8') as f:
             f.write(query)
 
-        print(gt_image_path)
-        print(query)
-        
 
         seglevel=int(llmService.getLevel(query[0], image_path))
 
