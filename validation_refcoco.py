@@ -67,10 +67,6 @@ for idx, (image_path, mask_data, query) in enumerate(tqdm(dataset, desc="Process
         with open(query_file_path, 'w', encoding='utf-8') as f:
             f.write(query)
 
-        print(gt_image_path)
-        print(query)
-        
-
         seglevel=int(llmService.getLevel(query[0], image_path))
 
         outputJsonFile, outputMaskFile, final_mask = samProcessor.generateMasks(imageOcv, base_name, mask_data, 0, image_path, args.save_path) 
@@ -92,7 +88,7 @@ for idx, (image_path, mask_data, query) in enumerate(tqdm(dataset, desc="Process
         plt.close()
 
         llmService.getSemantic(outputJsonFile, image_path, outputMaskFile)
-        final_mask = llmService.decideByLLM(outputJsonFile)
+        final_mask = llmService.decideByLLM(outputJsonFile, query)
         calculator.update(final_mask, mask_data)
         ciou, giou = calculator.compute()
         print(f"cIoU: {ciou}, gIoU: {giou}")
