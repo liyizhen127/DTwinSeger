@@ -53,32 +53,6 @@ class SamProcessor:
         }
 
         
-    def filter_and_merge_masks(self, masks, mask_data, threshold=0.7):
-        if len(masks) == 0:
-            return np.zeros_like(mask_data, dtype=bool), []
-        
-
-        final_mask = np.zeros_like(masks[0]['segmentation'], dtype=bool)
-        selected_masks = []
-        
-
-        mask_data_bool = mask_data.astype(bool)
-        
-
-        for i, mask_info in enumerate(masks):
-            mask = mask_info['segmentation']
-            
-
-            intersection = np.logical_and(mask, mask_data_bool)
-            intersection_area = np.sum(intersection)
-            mask_area = np.sum(mask)
-            
-  
-            if mask_area > 0 and intersection_area / mask_area > threshold:
-                final_mask = np.logical_or(final_mask, mask)
-                selected_masks.append(i)
-                
-        return final_mask, selected_masks
     def generate_bbox(self, mask):
 
    
@@ -112,14 +86,6 @@ class SamProcessor:
 
         origin_path = os.path.join(segmentationDir, f"{image_name}.jpg")
         cv2.imwrite(origin_path, image)
-
-        final_mask, selected_masks = self.filter_and_merge_masks(masks, mask_data)
-        
-        filtered_masks = [{
-                'segmentation': final_mask,
-                'bbox': self.generate_bbox(final_mask)
-            }]
-        filtered_masks.extend([masks[i] for i in range(len(masks)) if i not in selected_masks])
 
         i = 1
         while i < len(filtered_masks):
