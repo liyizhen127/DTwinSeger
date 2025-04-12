@@ -90,7 +90,7 @@ for idx, (query, image_path, mask_data) in enumerate(tqdm(dataset, desc="Process
         outputJsonFile, outputMaskFile, final_mask = samProcessor.generateMasks(imageOcv, base_name, mask_data, 0, image_path, args.save_path) 
 
         llmService.getSemantic(outputJsonFile, image_path, outputMaskFile)
-        final_mask = llmService.decideByLLM(outputJsonFile)
+        final_mask = llmService.decideByLLM(outputJsonFile, query)
         calculator.update(final_mask, mask_data)
         ciou, giou = calculator.compute()
         print(f"cIoU: {ciou}, gIoU: {giou}")
