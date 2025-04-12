@@ -30,7 +30,12 @@ class PromptConfig:
     '- Level 1 represents the part level, which means you should determine whether the segmentation answer is a part of an object, not the whole object.' \
     'Simply respond with the number 0 or 1. ' \
     'The following is the question and image.'
-    GET_SEMANTIC_PROMPT = 'Now you need to complete a semantic assignment task. ' \
-    'I will upload two images. The first image is extracted from the second image. ' \
-    'You need to determine what the first image is based on the second image. '
-    SUMMARY_PROMPT = 'Provide the best text for semantic assignment based on the above different content and original picture, as concise and clear as possible.'\
+    GET_SEMANTIC_PROMPT = '### Task Description: You will be presented with two images. \
+    The first image is a cropped section from the second image. Your task is to assign an accurate semantic label to the first image. \
+    To complete this task, refer to the following three aspects: \
+    [1]Semantic Information of the First Image: Analyze the image itself, identifying the object and its features. \
+    [2]Relationship Between the First and Second Images: Based on the overall content of the second image, understand the relationship between the first image and the second image, particularly their position within the structure. \
+    [3]Inquiry Content: If the first image provides the answer to the inquiry, incorporate the inquiry content directly into the semantic label. \
+    ### Finally, provide a summary sentence in the format "This is XXXXX," describing only the first image. \
+    ### Inquiry: '
+
